@@ -2,8 +2,34 @@ extends layout
 
 block content
   .container
-    .commands
-      button#square.btn Square
-      button#circle.btn Circle
-    .canvas-wrapper
-      canvas#cnvs(width=600, height=600)
+
+    .row
+      .commands
+        button#square.btn Create a Square
+      //button#circle.btn Circle
+      .canvas-wrapper.col-md-8
+        canvas#cnvs(width=600, height=600)
+      .col-md-4
+        ul#users
+  #start-modal.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4
+              Your Name
+          .modal-body
+            form.form-inline
+              .form-group
+                input#name(type="text" placeholder="Your Name")
+                select#colorselector
+                  option(value="106", data-color="#A0522D") sienna
+                  option(value="47", data-color="#CD5C5C") indianred
+                  option(value="87", data-color="#FF4500") orangered
+                  option(value="15", data-color="#FF4500") crimson
+                  option(value="24", data-color="#FF8C00") darkorange
+                  option(value="78", data-color="#C71585") mediumvioletred
+                button#user-btn.btn.btn-default(type="submit") OK
+
+
+
+

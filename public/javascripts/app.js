@@ -4,12 +4,25 @@
 'use strict';
 var objects = [];
 var socket = io();
+
+var selectedColor = "#ce0f0f";
 $(function(){
+  $('#colorselector').colorselector();
+  showUserModal();
+  $('#user-btn').click(function(e){
+    e.preventDefault();
+    var name = $('#name').val();
+    selectedColor= $('#colorselector option:selected').data('color');
+    //send the new user to other clients
+    socket.emit('user:joined',{name:name,selectedColor:selectedColor});
+    console.log("user: "+ name + " selected " + selectedColor);
+    $('#start-modal').modal('hide');
+  });
   var cnvs1 = new fabric.Canvas("cnvs");
 
   $('#square').click(function(){
     var rect = new fabric.Rect({
-      left:10, top:10, fill:'red', width:50, height:50
+      left:10, top:10, fill:selectedColor, width:50, height:50
     });
     var id = generateId();
     rect.id = id;
@@ -17,6 +30,17 @@ $(function(){
     var data = {rect:rect.toJSON(),id:id};
     socket.emit("new:rect", data);
     cnvs1.add(rect);
+
+  });
+  socket.on('users',function(users){
+    console.log("users message recieved");
+    users.forEach(function(u){
+      $('#users').append('<li>'+u+'</li>');
+    })
+  })
+  socket.on('user:joined',function(data){
+    console.log("new user joined");
+    $('#users').append('<li>'+data.name+'</li>');
 
   });
   socket.on('new:rect',function(data){
@@ -70,6 +94,9 @@ $(function(){
 
 
 });
+var showUserModal = function(){
+  $('#start-modal').modal()
+};
 var canvasEvents = [
   {
     event: 'object:moving',
