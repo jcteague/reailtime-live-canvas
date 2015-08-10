@@ -21,8 +21,9 @@ $(function(){
   var cnvs1 = new fabric.Canvas("cnvs");
 
   $('#square').click(function(){
+    var startPadding = objects.length +1;
     var rect = new fabric.Rect({
-      left:10, top:10, fill:selectedColor, width:50, height:50
+      left:startPadding*10, top:startPadding*10, fill:selectedColor, width:50, height:50
     });
     var id = generateId();
     rect.id = id;
