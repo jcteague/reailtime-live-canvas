@@ -9,6 +9,7 @@ var selectedColor = "#ce0f0f";
 $(function(){
   $('#colorselector').colorselector();
   showUserModal();
+
   $('#user-btn').click(function(e){
     e.preventDefault();
     var name = $('#name').val();
@@ -44,9 +45,13 @@ $(function(){
     $('#users').append('<li>'+data.name+'</li>');
 
   });
+  socket.on('user:disconnected',function(user){
+    console.log("user disconnected: " + user);
+
+  });
   socket.on('new:rect',function(data){
     console.log('received new rect');
-    console.log(data)
+    console.log(data);
     var rect = new fabric.Rect(data.rect);
     rect.id = data.id;
     objects.push(rect);

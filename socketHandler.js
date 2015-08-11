@@ -12,7 +12,7 @@ module.exports = function(io){
       socket.emit('users',users);
       socket.on('user:joined',function(data){
         console.log("user joined " + data);
-        users.push(data.name);
+        users[socket.id] = data.name;
         socket.broadcast.emit('user:joined',data);
 
       });
@@ -27,6 +27,12 @@ module.exports = function(io){
         socket.broadcast.emit(evnt,data);
       })
     })
+    socket.on("disconnect",function(){
+      console.log("disconecting: " + socket.id);
+      socket.broadcast.emit("user:disconnected",users[socket.id]);
+      delete users[socket.id];
+    })
 
   });
+
 }
